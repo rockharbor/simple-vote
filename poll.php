@@ -49,7 +49,7 @@ if (!$poll->enabled || ($expired)) {
 	<head>
 		<meta charset="UTF-8" />
 		<title>RH Vote!</title>
-		<link rel="stylesheet" href="styles.css" />
+		<link rel="stylesheet" href="/assets/styles.css" />
 	</head>
 	<body>
 		<section>
