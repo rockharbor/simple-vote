@@ -2,13 +2,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>Missing Poll</title>
+		<title>404</title>
 		<link rel="stylesheet" href="/assets/styles.css" />
 	</head>
 	<body>
 		<section>
 			<header>
-				<h1>This poll doesn&apos;t exist or has expired!</h1>
+				<h1>This is not the page you&apos;re looking for.</h1>
 			</header>
 		</section>
 	</body>

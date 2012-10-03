@@ -26,21 +26,22 @@ try {
 }
 
 if (!$query) {
-	redirect('404');
+	redirect("error/database");
 }
 
 $params = array(
 	':slug' => $url['params'][0]
 );
 if (!$query->execute($params)) {
-	redirect('404');
+	redirect("error/database");
 }
 
 $poll = $query->fetchObject();
 
 $expired = $poll->expires && (strtotime($poll->expires) - strtotime() <= 0);
-if (!$poll->enabled || ($expired)) {
-	redirect('404');
+if (!$poll->enabled || $expired) {
+	$msg = $expired ? 'expired' : 'off';
+	redirect("error/$msg");
 }
 
 ?>
