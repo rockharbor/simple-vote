@@ -33,12 +33,12 @@ function parseurl($url = null) {
  * @param string $location
  */
 function redirect($location) {
-	$base = $_SERVER['HTTP_HOST'];
+	$location = trim($location, '/');
 	if ($location === '404') {
-		header("Location: $base/$location", true, 404);
+		header("Location: /$location", true, 404);
 		exit();
 	}
-	header("Location: $base/$location");
+	header("Location: /$location");
 	exit();
 }
 
