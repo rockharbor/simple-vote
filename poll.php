@@ -20,7 +20,7 @@ try {
 }
 
 try {
-	$query = $connection->prepare("SELECT * FROM polls WHERE slug = :slug LIMIT 1;");
+	$query = $connection->prepare("SELECT `rowid`, * FROM `polls` WHERE `slug` = :slug LIMIT 1;");
 } catch (PDOException $e) {
 	debug($e);
 }
@@ -54,6 +54,17 @@ if (!$poll->enabled || $expired) {
 	</head>
 	<body>
 		<section>
+			<?php
+			$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
+			if ($query->execute(array(':poll_id' => $poll->rowid))):
+				while ($question = $query->fetchObject()): ?>
+			<form action="/vote" method="post">
+				<div class="question"><?php echo $question->question; ?></div>
+				<input type="hidden" name="question" value="<?php echo $question->rowid; ?>" />
+				<input type="submit" value="Yes" />
+			</form>
+				<?php endwhile; ?>
+			<?php endif; ?>
 		</section>
 	</body>
 </html>
