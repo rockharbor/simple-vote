@@ -45,7 +45,9 @@ if (!$poll->enabled || $expired) {
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<meta http-equiv="refresh" content="5" />
+		<?php if ($config->refresh): ?>
+		<meta http-equiv="refresh" content="<?php echo $config->refresh; ?>" />
+		<?php endif; ?>
 		<title>RH Vote!</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
 		<link rel="stylesheet" href="/css/styles.css" />

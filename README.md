@@ -14,8 +14,17 @@ $ mv database.sqlite3.default database.sqlite3
 $ mv config.json.default config.json
 ```
 
+## Configuration
+
+### Database
+
 If you want to use a different database, change the database name in the config
 JSON file to point to the SQLite database.
+
+### Refresh interval
+
+The counter page refreshes every 5 seconds by default. You can disable this by 
+changing the `refresh` config key to `false` to not refresh, or an integer.
 
 ## Administration
 
