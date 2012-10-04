@@ -44,16 +44,26 @@ if (!$poll->enabled || $expired) {
 	redirect("error/$msg");
 }
 
+// get existing votes
+$votes = array();
+if (isset($_COOKIE['votes'])) {
+	$votes = unserialize($_COOKIE['votes']);
+}
+
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8" />
 		<title>RH Vote!</title>
-		<link rel="stylesheet" href="/assets/styles.css" />
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
+		<link rel="stylesheet" href="/css/styles.css" />
 	</head>
 	<body>
 		<section>
+			<header class="page-header">
+				<h1><?php echo $poll->title; ?></h1>
+			</header>
 			<?php
 			$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
 			if ($query->execute(array(':poll_id' => $poll->rowid))):
@@ -61,7 +71,11 @@ if (!$poll->enabled || $expired) {
 			<form action="/vote" method="post">
 				<div class="question"><?php echo $question->question; ?></div>
 				<input type="hidden" name="question" value="<?php echo $question->rowid; ?>" />
-				<input type="submit" value="Yes" />
+				<?php if (!isset($votes[$question->rowid])): ?>
+					<button class="btn btn-success" type="submit"><i class="icon-thumbs-up icon-white"></i> Yes</button>
+				<?php else: ?>
+					<button class="btn" type="submit" value="Yes" disabled><i class="icon-ok"></i> Yes</button>
+				<?php endif; ?>
 			</form>
 				<?php endwhile; ?>
 			<?php endif; ?>
