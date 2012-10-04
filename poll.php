@@ -19,11 +19,7 @@ try {
 	debug($e);
 }
 
-try {
-	$query = $connection->prepare("SELECT `rowid`, * FROM `polls` WHERE `slug` = :slug LIMIT 1;");
-} catch (PDOException $e) {
-	debug($e);
-}
+$query = $connection->prepare("SELECT `rowid`, * FROM `polls` WHERE `slug` = :slug LIMIT 1;");
 
 if (!$query) {
 	redirect("error/database");
