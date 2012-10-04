@@ -1,4 +1,7 @@
 <?php
+
+global $url, $connection;
+
 header('Content-type: application/json');
 
 if (empty($_POST) || empty($_POST['question'])) {
@@ -25,18 +28,6 @@ if ($votes[$_POST['question']]) {
 	);
 	echo json_encode($response);
 	return;
-}
-$config = json_decode(file_get_contents('config.json'));
-
-try {
-	$connection = new PDO(
-		"sqlite:$config->database",
-		null,
-		null,
-		array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-	);
-} catch (PDOException $e) {
-	debug($e);
 }
 
 // make sure this is a valid poll

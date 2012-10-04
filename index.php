@@ -2,6 +2,8 @@
 /**
  * Stupid simple dispatcher 
  */
+$url = parseurl();
+$config = null;
 
 /**
  * Takes a url (or the current one) and "parses" it. Everything after
@@ -57,7 +59,39 @@ function debug($obj) {
 	echo "<pre>$out</pre>";
 }
 
-$url = parseurl();
+/**
+ * Create connection 
+ */
+$db = config('database');
+$connection = null;
+try {
+	$connection = new PDO(
+		"sqlite:$db",
+		null,
+		null,
+		array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+	);
+} catch (PDOException $e) {
+	debug($e);
+	$url['page'] = 'error';
+	$url['params'] = array('database');
+}
+
+/**
+ * Helper function for getting config keys
+ * 
+ * @param string $key The config key. If null, the object is returned 
+ */
+function config($key = null) {
+	global $config;
+	if (!$config) {
+		$config = json_decode(file_get_contents('config.json'));
+	}
+	if ($key) {
+		return $config->{$key};
+	}
+	return $config;
+}
 
 if (!file_exists($url['page'].'.php')) {
 	$url['page'] = '404';

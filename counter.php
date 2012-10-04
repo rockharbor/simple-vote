@@ -1,22 +1,9 @@
 <?php
 
-$url = parseurl();
+global $url, $connection;
 
 if (empty($url['params'][0])) {
 	redirect('404');
-}
-
-$config = json_decode(file_get_contents('config.json'));
-
-try {
-	$connection = new PDO(
-		"sqlite:$config->database",
-		null,
-		null,
-		array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-	);
-} catch (PDOException $e) {
-	debug($e);
 }
 
 $query = $connection->prepare("SELECT `rowid`, * FROM `polls` WHERE `slug` = :slug LIMIT 1;");
@@ -39,14 +26,13 @@ if (!$poll->enabled || $expired) {
 	$msg = $expired ? 'expired' : 'off';
 	redirect("error/$msg");
 }
-
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<?php if ($config->refresh): ?>
-		<meta http-equiv="refresh" content="<?php echo $config->refresh; ?>" />
+		<?php if (config('refresh')): ?>
+		<meta http-equiv="refresh" content="<?php echo config('refresh'); ?>" />
 		<?php endif; ?>
 		<title>RH Vote!</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />

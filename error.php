@@ -1,6 +1,6 @@
 <?php
 
-$url = parseurl();
+global $url;
 
 switch ($url['params'][0]) {
 	case 'database':
