@@ -33,8 +33,8 @@ if ($votes[$_POST['question']]) {
 		debug($e);
 	}
 	
-	$query = $connection->prepare('UPDATE `questions` SET `votes` = (`votes` + 1) WHERE `rowid` = :rowid;');
-	if ($query->execute(array(':rowid' => $_POST['question']))) {
+	$query = $connection->prepare("UPDATE `questions` SET `votes` = (`votes` + 1) WHERE `rowid` = {$_POST['question']};");
+	if ($query->execute()) {
 		$response = array(
 			'success' => true,
 			'double' => false,
