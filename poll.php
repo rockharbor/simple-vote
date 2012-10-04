@@ -58,6 +58,38 @@ if (isset($_COOKIE['votes'])) {
 		<title>RH Vote!</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
 		<link rel="stylesheet" href="/css/styles.css" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('form').submit(function() {
+					var form = $(this);
+					$.ajax({
+						url: $(this).prop('action'),
+						type: $(this).prop('method'),
+						data: $(this).serialize(),
+						dataType: 'json'
+					}).done(function(data) {
+						var msg = $('<div />');
+						msg.addClass('alert');
+						msg.addClass(data.success ? 'alert-success' : 'alert-error');
+						if (data['double']) {
+							msg.removeClass('alert-success');
+						}
+						msg.text(data.message);
+						msg.prepend('<button type="button" class="close" data-dismiss="alert">×</button>');
+						form.find('[type="submit"]')
+							.prop('disabled', true)
+							.removeClass('btn-success')
+							.find('i')
+								.removeClass('icon-thumbs-up')
+								.removeClass('icon-white')
+								.addClass('icon-ok');
+						$('body').prepend(msg);
+					});
+					return false;
+				});
+			});
+		</script>
 	</head>
 	<body>
 		<section>
