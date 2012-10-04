@@ -71,12 +71,14 @@ if (isset($_COOKIE['votes'])) {
 					}).done(function(data) {
 						var msg = $('<div />');
 						msg.addClass('alert');
+						if ($('div.alert').length > 0) {
+							msg = $('div.alert');
+						}
 						msg.addClass(data.success ? 'alert-success' : 'alert-error');
 						if (data['double']) {
 							msg.removeClass('alert-success');
 						}
 						msg.text(data.message);
-						msg.prepend('<button type="button" class="close" data-dismiss="alert">×</button>');
 						form.find('[type="submit"]')
 							.prop('disabled', true)
 							.removeClass('btn-success')
@@ -84,7 +86,7 @@ if (isset($_COOKIE['votes'])) {
 								.removeClass('icon-thumbs-up')
 								.removeClass('icon-white')
 								.addClass('icon-ok');
-						$('body').prepend(msg);
+						$('header').after(msg);
 					});
 					return false;
 				});
