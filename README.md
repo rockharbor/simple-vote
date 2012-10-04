@@ -1,8 +1,9 @@
-# Vote app
+# Simple Vote
 
 This is a ridiculously simple voting app. It doesn't require any sort of login,
 and uses cookies to remember if someone voted. It's not designed to be fool
-proof, just simple and quick yes or no questions.
+proof, just simple and quick yes or no questions. It's also designed for mobile 
+more than anything else.
 
 ## Install
 
