@@ -39,7 +39,6 @@ if (isset($_COOKIE['votes'])) {
 	<head>
 		<meta charset="UTF-8" />
 		<title>RH Vote!</title>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/fonts.css" />
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/styles.css" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -53,24 +52,7 @@ if (isset($_COOKIE['votes'])) {
 						data: $(this).serialize(),
 						dataType: 'json'
 					}).done(function(data) {
-						var msg = $('<div />');
-						msg.addClass('alert');
-						if ($('div.alert').length > 0) {
-							msg = $('div.alert');
-						}
-						msg.addClass(data.success ? 'alert-success' : 'alert-error');
-						if (data['double']) {
-							msg.removeClass('alert-success');
-						}
-						msg.text(data.message);
-						form.find('[type="submit"]')
-							.prop('disabled', true)
-							.removeClass('btn-success')
-							.find('i')
-								.removeClass('icon-thumbs-up')
-								.removeClass('icon-white')
-								.addClass('icon-ok');
-						$('header').after(msg);
+						form.find('[type="submit"]').prop('disabled', true)
 					});
 					return false;
 				});
@@ -80,19 +62,19 @@ if (isset($_COOKIE['votes'])) {
 	<body>
 		<section>
 			<header class="page-header">
-				<h1><?php echo $poll->title; ?></h1>
+				<img src="<?php echo $url['base']; ?>/img/header.jpg" />
 			</header>
 			<?php
 			$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
 			if ($query->execute(array(':poll_id' => $poll->rowid))):
 				while ($question = $query->fetchObject()): ?>
 			<form action="<?php echo $url['base']; ?>/vote" method="post">
-				<div class="question"><?php echo $question->question; ?></div>
+				<div class="poll-question"><?php echo $question->question; ?></div>
 				<input type="hidden" name="question" value="<?php echo $question->rowid; ?>" />
 				<?php if (!isset($votes[$question->rowid])): ?>
-					<button class="btn btn-success" type="submit"><i class="icon-thumbs-up icon-white"></i> Yes</button>
+					<button class="btn" type="submit">Yes</button>
 				<?php else: ?>
-					<button class="btn" type="submit" value="Yes" disabled><i class="icon-ok"></i> Yes</button>
+					<button class="btn" type="submit" disabled>Yes</button>
 				<?php endif; ?>
 			</form>
 				<?php endwhile; ?>

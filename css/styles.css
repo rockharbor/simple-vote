@@ -9,6 +9,10 @@ body {
 	background: #515352;
 }
 
+header img {
+	max-width: 100%;
+}
+
 section {
 	overflow: hidden;
 	box-shadow: 3px 3px 10px 5px #000;
@@ -28,22 +32,15 @@ section {
 	box-shadow: 0px 3px 10px -1px #b3b3b3;
 }
 
-form,
 table {
 	display: table;
 	width: 100%;
 	padding: 20px;
 }
 
-form .question {
-	display: table-cell;
-	vertical-align: middle;
-	margin-right: 20px;
-	margin-bottom: 20px;
-}
-
-form button {
-	float: right;
+form {
+	display: table;
+	width: 100%;
 }
 
 form:after {
@@ -51,6 +48,43 @@ form:after {
 	content: ' ';
 	display: block;
 	height: 1px;
+}
+
+.poll-question {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 20px;
+	
+	font-size: .7em;
+}
+
+.btn {
+	display: inline-block;
+	float: right;
+	padding: 10px;
+	margin: 20px;
+	
+	cursor: pointer;
+	
+	background: #B03E24;
+	
+	border: 0;
+	
+	color: #fff;
+	font-family: BebasRegular, Helvetica, Arial, sans-serif;
+	font-size: .4em;
+}
+
+.btn[disabled] {
+	cursor: auto;
+	
+	background: #ccc;
+	
+	color: #DBDCDD;
+}
+
+.btn[disabled]:before {
+	content: '\2713 ';
 }
 
 table td {
