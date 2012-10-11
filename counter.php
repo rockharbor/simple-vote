@@ -41,45 +41,57 @@ function format_question($question) {
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<?php if (config('refresh')): ?>
-		<meta http-equiv="refresh" content="<?php echo config('refresh'); ?>" />
-		<?php endif; ?>
 		<title>RH Vote!</title>
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/fonts.css" />
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/styles.css" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<?php if (config('refresh')): ?>
+		<script>
+			function refresh() {
+				console.log(window.location);
+				$('#page').load(window.location.href+' #counts');
+				setTimeout(refresh, <?php echo config('refresh')*1000; ?>);
+			}
+			
+			$(document).ready(function() {
+				setTimeout(refresh, <?php echo config('refresh')*1000; ?>);
+			});
+		</script>
+		<?php endif; ?>
 	</head>
 	<body>
 		<section>
 			<header class="page-header">
 				<img src="<?php echo $url['base']; ?>/img/header.jpg" />
 			</header>
-			<table class="table table-striped">
-				<tbody>
-			<?php
-			$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
-			if ($query->execute(array(':poll_id' => $poll->rowid))):
-				$questions = $query->fetchAll(PDO::FETCH_CLASS);
-				$questions = array_chunk($questions, ceil(count($questions)/2));
-				foreach ($questions[0] as $row => $obj): ?>
-					<tr>
-						<td>
-							<?php 
-							echo format_question($questions[0][$row]);
-							?>
-						</td>
-						<td>
-							<?php
-							if (isset($questions[1][$row])) {
-								echo format_question($questions[1][$row]);
-							}
-							?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			<?php endif; ?>
-				</tbody>
-			</table>
+			<div id="page">
+				<table id="counts" class="table table-striped">
+					<tbody>
+				<?php
+				$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
+				if ($query->execute(array(':poll_id' => $poll->rowid))):
+					$questions = $query->fetchAll(PDO::FETCH_CLASS);
+					$questions = array_chunk($questions, ceil(count($questions)/2));
+					foreach ($questions[0] as $row => $obj): ?>
+						<tr>
+							<td>
+								<?php 
+								echo format_question($questions[0][$row]);
+								?>
+							</td>
+							<td>
+								<?php
+								if (isset($questions[1][$row])) {
+									echo format_question($questions[1][$row]);
+								}
+								?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
 		</section>
 	</body>
 </html>
