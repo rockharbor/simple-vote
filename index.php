@@ -16,6 +16,8 @@ function parseurl($url = null) {
 	if (!$url) {
 		$url = $_GET['url'];
 	}
+	$host = $_SERVER['HTTP_HOST'];
+	$path = trim(str_replace($_GET['url'], '', $_SERVER['REQUEST_URI']), '/');
 	$url = explode('/', $_GET['url']);
 	$url = array_filter($url);
 	if (empty($url)) {
@@ -24,6 +26,7 @@ function parseurl($url = null) {
 		);
 	}
 	return array(
+		'base' => "http://$host/$path",
 		'page' => $url[0],
 		'params' => array_slice($url, 1)
 	);
@@ -35,12 +38,13 @@ function parseurl($url = null) {
  * @param string $location
  */
 function redirect($location) {
+	global $url;
 	$location = trim($location, '/');
 	if ($location === '404') {
-		header("Location: /$location", true, 404);
+		header("Location: {$url['base']}/$location", true, 404);
 		exit();
 	}
-	header("Location: /$location");
+	header("Location: {$url['base']}/$location");
 	exit();
 }
 

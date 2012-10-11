@@ -23,7 +23,7 @@ switch ($url['params'][0]) {
 		<meta charset="UTF-8" />
 		<title>Error</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
-		<link rel="stylesheet" href="/css/styles.css" />
+		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/styles.css" />
 	</head>
 	<body>
 		<section>

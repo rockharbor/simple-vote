@@ -40,7 +40,7 @@ if (isset($_COOKIE['votes'])) {
 		<meta charset="UTF-8" />
 		<title>RH Vote!</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
-		<link rel="stylesheet" href="/css/styles.css" />
+		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/styles.css" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script>
 			$(document).ready(function() {
@@ -85,7 +85,7 @@ if (isset($_COOKIE['votes'])) {
 			$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
 			if ($query->execute(array(':poll_id' => $poll->rowid))):
 				while ($question = $query->fetchObject()): ?>
-			<form action="/vote" method="post">
+			<form action="<?php echo $url['base']; ?>/vote" method="post">
 				<div class="question"><?php echo $question->question; ?></div>
 				<input type="hidden" name="question" value="<?php echo $question->rowid; ?>" />
 				<?php if (!isset($votes[$question->rowid])): ?>
