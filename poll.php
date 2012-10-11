@@ -40,6 +40,7 @@ if (isset($_COOKIE['votes'])) {
 		<meta charset="UTF-8" />
 		<title>RH Vote!</title>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
+		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/fonts.css" />
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/styles.css" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script>
