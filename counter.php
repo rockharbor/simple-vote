@@ -26,6 +26,16 @@ if (!$poll->enabled || $expired) {
 	$msg = $expired ? 'expired' : 'off';
 	redirect("error/$msg");
 }
+
+function format_question($question) {
+	echo "<span class=\"question\">$question->question</span>";
+	$votes = str_split($question->votes);
+	echo '<span class="votes">';
+	foreach ($votes as $v) {
+		echo "<span title=\"$v\" class=\"number\">$v</span>";
+	}
+	echo '</span>';
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,7 +45,6 @@ if (!$poll->enabled || $expired) {
 		<meta http-equiv="refresh" content="<?php echo config('refresh'); ?>" />
 		<?php endif; ?>
 		<title>RH Vote!</title>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" />
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/fonts.css" />
 		<link rel="stylesheet" href="<?php echo $url['base']; ?>/css/styles.css" />
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -43,29 +52,31 @@ if (!$poll->enabled || $expired) {
 	<body>
 		<section>
 			<header class="page-header">
-				<h1><?php echo $poll->title; ?></h1>
+				<img src="<?php echo $url['base']; ?>/img/header.jpg" />
 			</header>
 			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Question</th>
-						<th>Votes</th>
-					</tr>
-				</thead>
 				<tbody>
 			<?php
 			$query = $connection->prepare("SELECT `rowid`, * FROM `questions` WHERE `poll_id` = :poll_id ORDER BY `order` ASC;");
 			if ($query->execute(array(':poll_id' => $poll->rowid))):
-				while ($question = $query->fetchObject()): ?>
+				$questions = $query->fetchAll(PDO::FETCH_CLASS);
+				$questions = array_chunk($questions, ceil(count($questions)/2));
+				foreach ($questions[0] as $row => $obj): ?>
 					<tr>
 						<td>
-							<?php echo $question->question; ?>
+							<?php 
+							echo format_question($questions[0][$row]);
+							?>
 						</td>
 						<td>
-							<?php echo $question->votes; ?>
+							<?php
+							if (isset($questions[1][$row])) {
+								echo format_question($questions[1][$row]);
+							}
+							?>
 						</td>
 					</tr>
-				<?php endwhile; ?>
+				<?php endforeach; ?>
 			<?php endif; ?>
 				</tbody>
 			</table>
